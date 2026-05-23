@@ -1,9 +1,6 @@
 package com.exemplo.reservas.controller;
 
-import com.exemplo.reservas.command.AtualizarUsuarioComando;
-import com.exemplo.reservas.command.ExcluirUsuarioComando;
-import com.exemplo.reservas.command.InserirUsuarioComando;
-import com.exemplo.reservas.dao.UsuarioDAO;
+import com.exemplo.reservas.service.UsuarioService;
 import com.exemplos.reserva.factory.UsuarioFactory;
 import com.exemplo.reservas.model.Usuario;
 import jakarta.servlet.ServletException;
@@ -24,14 +21,14 @@ public class GerenciarUsuarioServlet extends HttpServlet {
         String idParam = request.getParameter("id");
 
         try {
-            UsuarioDAO dao = new UsuarioDAO();
+            UsuarioService usuarioService = new UsuarioService();
 
             if ("novo".equals(acao)) {
                 request.getRequestDispatcher("/jsp/usuarios/formUsuario.jsp").forward(request, response);
 
             } else if ("editar".equals(acao) && idParam != null) {
                 int id = Integer.parseInt(idParam);
-                Usuario usuario = dao.buscarPorId(id);
+                Usuario usuario = usuarioService.buscarPorId(id);
                 if (usuario == null) {
                     response.sendRedirect(request.getContextPath() + "/listarUsuarios?erro=Usuario nao encontrado");
                     return;
@@ -41,11 +38,11 @@ public class GerenciarUsuarioServlet extends HttpServlet {
 
             } else if ("excluir".equals(acao) && idParam != null) {
                 int id = Integer.parseInt(idParam);
-                if (dao.temReservas(id)) {
+                if (!usuarioService.podeExcluir(id)) {
                     response.sendRedirect(request.getContextPath() + "/listarUsuarios?erro=Nao e possivel excluir usuario com reservas ativas");
                     return;
                 }
-                new ExcluirUsuarioComando(dao, id).executar();
+                usuarioService.excluir(id);
                 response.sendRedirect(request.getContextPath() + "/listarUsuarios?sucesso=Usuario excluido com sucesso!");
 
             } else {
@@ -74,15 +71,15 @@ public class GerenciarUsuarioServlet extends HttpServlet {
         }
 
         try {
-            UsuarioDAO dao = new UsuarioDAO();
+            UsuarioService usuarioService = new UsuarioService();
 
             if (idParam != null && !idParam.isEmpty()) {
                 Usuario usuario = UsuarioFactory.criarComId(Integer.parseInt(idParam), nome.trim(), tipo);
-                new AtualizarUsuarioComando(dao, usuario).executar();
+                usuarioService.atualizar(usuario);
                 response.sendRedirect(request.getContextPath() + "/listarUsuarios?sucesso=Usuario atualizado!");
             } else {
                 Usuario usuario = UsuarioFactory.criar(nome.trim(), tipo);
-                new InserirUsuarioComando(dao, usuario).executar();
+                usuarioService.inserir(usuario);
                 response.sendRedirect(request.getContextPath() + "/listarUsuarios?sucesso=Usuario cadastrado!");
             }
 

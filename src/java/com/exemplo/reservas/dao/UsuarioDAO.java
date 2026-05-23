@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioDAO {
+public class UsuarioDAO implements IUsuarioDAO {
 
     public void inserir(Usuario usuario) throws SQLException {
         String sql = "INSERT INTO usuarios (nome, email, tipo) VALUES (?, ?, ?)";

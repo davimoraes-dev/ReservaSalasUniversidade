@@ -1,12 +1,12 @@
 package com.exemplo.reservas.command;
 
-import com.exemplo.reservas.dao.UsuarioDAO;
+import com.exemplo.reservas.dao.IUsuarioDAO;
 
 public class ExcluirUsuarioComando implements Comando {
-    private final UsuarioDAO dao;
+    private final IUsuarioDAO dao;
     private final int id;
 
-    public ExcluirUsuarioComando(UsuarioDAO dao, int id) {
+    public ExcluirUsuarioComando(IUsuarioDAO dao, int id) {
         this.dao = dao;
         this.id = id;
     }

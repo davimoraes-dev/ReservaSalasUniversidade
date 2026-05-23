@@ -9,9 +9,6 @@ public class ProjetorDecorator extends EquipamentoDecorator {
     @Override
     public String getDescricao() {
         String base = salaDecorada.getDescricao();
-        if (base.equals("Sem equipamentos")) {
-            return "Projetor";
-        }
-        return base + ", Projetor";
+        return base.equals("Sem equipamentos") ? "Projetor" : base + ", Projetor";
     }
 }

@@ -1,12 +1,12 @@
 package com.exemplo.reservas.command;
 
-import com.exemplo.reservas.dao.ReservaDAO;
+import com.exemplo.reservas.dao.IReservaDAO;
 
 public class CancelarReservaComando implements Comando {
-    private final ReservaDAO dao;
+    private final IReservaDAO dao;
     private final int id;
 
-    public CancelarReservaComando(ReservaDAO dao, int id) {
+    public CancelarReservaComando(IReservaDAO dao, int id) {
         this.dao = dao;
         this.id = id;
     }

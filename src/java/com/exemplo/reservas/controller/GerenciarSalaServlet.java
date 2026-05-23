@@ -1,9 +1,6 @@
 package com.exemplo.reservas.controller;
 
-import com.exemplo.reservas.command.AtualizarSalaComando;
-import com.exemplo.reservas.command.ExcluirSalaComando;
-import com.exemplo.reservas.command.InserirSalaComando;
-import com.exemplo.reservas.dao.SalaDAO;
+import com.exemplo.reservas.service.SalaService;
 import com.exemplos.reserva.factory.SalaFactory;
 import com.exemplo.reservas.model.Sala;
 import jakarta.servlet.ServletException;
@@ -12,7 +9,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet("/gerenciarSala")
 public class GerenciarSalaServlet extends HttpServlet {
@@ -25,14 +21,14 @@ public class GerenciarSalaServlet extends HttpServlet {
         String idParam = request.getParameter("id");
 
         try {
-            SalaDAO dao = new SalaDAO();
+            SalaService salaService = new SalaService();
 
             if ("novo".equals(acao)) {
                 request.getRequestDispatcher("/jsp/salas/formSala.jsp").forward(request, response);
 
             } else if ("editar".equals(acao) && idParam != null) {
                 int id = Integer.parseInt(idParam);
-                Sala sala = dao.buscarPorId(id);
+                Sala sala = salaService.buscarPorId(id);
                 if (sala == null) {
                     response.sendRedirect(request.getContextPath() + "/listarSalas?erro=Sala nao encontrada");
                     return;
@@ -42,11 +38,11 @@ public class GerenciarSalaServlet extends HttpServlet {
 
             } else if ("excluir".equals(acao) && idParam != null) {
                 int id = Integer.parseInt(idParam);
-                if (dao.temReservas(id)) {
+                if (!salaService.podeExcluir(id)) {
                     response.sendRedirect(request.getContextPath() + "/listarSalas?erro=Nao e possivel excluir sala com reservas ativas");
                     return;
                 }
-                new ExcluirSalaComando(dao, id).executar();
+                salaService.excluir(id);
                 response.sendRedirect(request.getContextPath() + "/listarSalas?sucesso=Sala excluida com sucesso!");
 
             } else {
@@ -79,18 +75,18 @@ public class GerenciarSalaServlet extends HttpServlet {
         }
 
         try {
-            SalaDAO dao = new SalaDAO();
+            SalaService salaService = new SalaService();
 
             if (idParam != null && !idParam.isEmpty()) {
                 Sala sala = SalaFactory.criarComId(Integer.parseInt(idParam), nome.trim(),
                         Integer.parseInt(capacidadeParam), localizacao.trim(),
                         temProjetor, temComputador);
-                new AtualizarSalaComando(dao, sala).executar();
+                salaService.atualizar(sala);
                 response.sendRedirect(request.getContextPath() + "/listarSalas?sucesso=Sala atualizada com sucesso!");
             } else {
                 Sala sala = SalaFactory.criar(nome.trim(), Integer.parseInt(capacidadeParam),
                         localizacao.trim(), temProjetor, temComputador);
-                new InserirSalaComando(dao, sala).executar();
+                salaService.inserir(sala);
                 response.sendRedirect(request.getContextPath() + "/listarSalas?sucesso=Sala cadastrada com sucesso!");
             }
 

@@ -16,7 +16,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReservaDAO {
+public class ReservaDAO implements IReservaDAO {
 
     public void inserir(Reserva reserva) throws SQLException {
         String sql = "INSERT INTO reservas (sala_id, usuario_id, data_reserva, hora_inicio, hora_fim, motivo, status) VALUES (?, ?, ?, ?, ?, ?, ?)";

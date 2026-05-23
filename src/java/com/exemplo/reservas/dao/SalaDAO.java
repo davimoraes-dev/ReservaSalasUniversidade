@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SalaDAO {
+public class SalaDAO implements ISalaDAO {
 
     public void inserir(Sala sala) throws SQLException {
         String sql = "INSERT INTO salas (nome, capacidade, tem_projetor, tem_computador, localizacao) VALUES (?, ?, ?, ?, ?)";

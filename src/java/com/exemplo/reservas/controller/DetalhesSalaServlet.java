@@ -1,20 +1,16 @@
 package com.exemplo.reservas.controller;
 
-import com.exemplo.reservas.dao.ReservaDAO;
-import com.exemplo.reservas.dao.SalaDAO;
-import com.exemplo.reservas.decorator.ComputadorDecorator;
-import com.exemplo.reservas.decorator.ProjetorDecorator;
-import com.exemplo.reservas.decorator.SalaBasica;
 import com.exemplo.reservas.decorator.SalaComponente;
 import com.exemplo.reservas.model.Reserva;
 import com.exemplo.reservas.model.Sala;
+import com.exemplo.reservas.service.ReservaService;
+import com.exemplo.reservas.service.SalaService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/detalhesSala")
@@ -32,25 +28,19 @@ public class DetalhesSalaServlet extends HttpServlet {
 
         try {
             int id = Integer.parseInt(idParam);
-            SalaDAO salaDAO = new SalaDAO();
-            ReservaDAO reservaDAO = new ReservaDAO();
+            SalaService salaService = new SalaService();
+            ReservaService reservaService = new ReservaService();
 
-            Sala sala = salaDAO.buscarPorId(id);
+            Sala sala = salaService.buscarPorId(id);
             if (sala == null) {
                 response.sendRedirect(request.getContextPath() + "/listarSalas?erro=Sala não encontrada");
                 return;
             }
 
-            List<Reserva> reservas = reservaDAO.buscarPorSala(id);
+            List<Reserva> reservas = reservaService.buscarPorSala(id);
             sala.setReservas(reservas);
 
-            SalaComponente salaDecorada = new SalaBasica();
-            if (sala.isTemProjetor()) {
-                salaDecorada = new ProjetorDecorator(salaDecorada);
-            }
-            if (sala.isTemComputador()) {
-                salaDecorada = new ComputadorDecorator(salaDecorada);
-            }
+            SalaComponente salaDecorada = salaService.construirEquipamentos(sala);
 
             request.setAttribute("sala", sala);
             request.setAttribute("salaDecorada", salaDecorada);
@@ -59,7 +49,7 @@ public class DetalhesSalaServlet extends HttpServlet {
 
         } catch (NumberFormatException e) {
             response.sendRedirect(request.getContextPath() + "/listarSalas?erro=ID inválido");
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/listarSalas?erro=Erro ao carregar dados");
         }

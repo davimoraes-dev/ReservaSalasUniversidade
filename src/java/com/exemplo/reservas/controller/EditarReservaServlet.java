@@ -1,20 +1,17 @@
 package com.exemplo.reservas.controller;
 
-import com.exemplo.reservas.command.AtualizarReservaComando;
-import com.exemplo.reservas.dao.ReservaDAO;
-import com.exemplo.reservas.dao.SalaDAO;
-import com.exemplo.reservas.dao.UsuarioDAO;
-import com.exemplos.reserva.factory.ReservaFactory;
 import com.exemplo.reservas.model.Reserva;
 import com.exemplo.reservas.model.Sala;
 import com.exemplo.reservas.model.Usuario;
+import com.exemplo.reservas.service.ReservaService;
+import com.exemplo.reservas.service.SalaService;
+import com.exemplo.reservas.service.UsuarioService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -34,18 +31,18 @@ public class EditarReservaServlet extends HttpServlet {
 
         try {
             int id = Integer.parseInt(idParam);
-            ReservaDAO reservaDAO = new ReservaDAO();
-            SalaDAO salaDAO = new SalaDAO();
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            ReservaService reservaService = new ReservaService();
+            SalaService salaService = new SalaService();
+            UsuarioService usuarioService = new UsuarioService();
 
-            Reserva reserva = reservaDAO.buscarPorId(id);
+            Reserva reserva = reservaService.buscarPorId(id);
             if (reserva == null) {
                 response.sendRedirect(request.getContextPath() + "/listarReservas?erro=Reserva não encontrada");
                 return;
             }
 
-            List<Sala> salas = salaDAO.listarTodas();
-            List<Usuario> usuarios = usuarioDAO.listarTodos();
+            List<Sala> salas = salaService.listarTodas();
+            List<Usuario> usuarios = usuarioService.listarTodos();
 
             request.setAttribute("reserva", reserva);
             request.setAttribute("salas", salas);
@@ -54,7 +51,7 @@ public class EditarReservaServlet extends HttpServlet {
 
         } catch (NumberFormatException e) {
             response.sendRedirect(request.getContextPath() + "/listarReservas?erro=ID inválido");
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/listarReservas?erro=Erro ao carregar dados");
         }
@@ -87,37 +84,16 @@ public class EditarReservaServlet extends HttpServlet {
             LocalTime horaInicio = LocalTime.parse(horaInicioParam);
             LocalTime horaFim = LocalTime.parse(horaFimParam);
 
-            if (horaFim.isBefore(horaInicio) || horaFim.equals(horaInicio)) {
-                response.sendRedirect(request.getContextPath() + "/jsp/reservas/editarReserva.jsp?id=" + id + "&erro=Hora fim deve ser depois da hora início");
-                return;
-            }
-
-            SalaDAO salaDAO = new SalaDAO();
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
-            Sala sala = salaDAO.buscarPorId(salaId);
-            Usuario usuario = usuarioDAO.buscarPorId(usuarioId);
-
-            if (sala == null || usuario == null) {
-                response.sendRedirect(request.getContextPath() + "/jsp/reservas/editarReserva.jsp?id=" + id + "&erro=Sala ou usuário não encontrado");
-                return;
-            }
-
-            ReservaDAO reservaDAO = new ReservaDAO();
-            boolean temConflito = reservaDAO.existeConflito(salaId, data, horaInicio, horaFim, id);
-            if (temConflito) {
-                response.sendRedirect(request.getContextPath() + "/jsp/reservas/editarReserva.jsp?id=" + id + "&erro=Já existe uma reserva para esta sala neste horário");
-                return;
-            }
-
-            Reserva reserva = ReservaFactory.criarComId(id, sala, usuario, data, horaInicio, horaFim, motivo);
-            new AtualizarReservaComando(reservaDAO, reserva).executar();
+            new ReservaService().atualizarReserva(id, salaId, usuarioId, data, horaInicio, horaFim, motivo);
             response.sendRedirect(request.getContextPath() + "/listarReservas?sucesso=Reserva atualizada com sucesso!");
 
-        } catch (NumberFormatException e) {
-            response.sendRedirect(request.getContextPath() + "/jsp/reservas/editarReserva.jsp?erro=Formato de número inválido");
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            String idParam = request.getParameter("id");
+            response.sendRedirect(request.getContextPath() + "/jsp/reservas/editarReserva.jsp?id=" + idParam + "&erro=" + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/jsp/reservas/editarReserva.jsp?erro=Erro ao atualizar reserva");
+            String idParam = request.getParameter("id");
+            response.sendRedirect(request.getContextPath() + "/jsp/reservas/editarReserva.jsp?id=" + idParam + "&erro=Erro ao atualizar reserva");
         }
     }
 }
