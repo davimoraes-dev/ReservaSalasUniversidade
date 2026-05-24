@@ -74,7 +74,7 @@ Usuario aluno = UsuarioFactory.criarAluno("Maria Santos");
 
 ## Funcionalidades
 
-- **Dashboard** com totais do dia: reservas, salas e usuários cadastrados
+
 - **Salas** — cadastro, edição, exclusão e detalhes; equipamentos adicionados via Decorator (projetor, computador)
 - **Usuários** — cadastro de alunos e professores, edição, exclusão e detalhes
 - **Reservas** — nova reserva com validação de conflito de horários, edição e cancelamento
