@@ -69,6 +69,8 @@ public class EditarReservaServlet extends HttpServlet {
             String horaInicioParam = request.getParameter("horaInicio");
             String horaFimParam = request.getParameter("horaFim");
             String motivo = request.getParameter("motivo");
+            boolean usarComputadores = "on".equals(request.getParameter("usarComputadores"));
+            boolean usarProjetor = "on".equals(request.getParameter("usarProjetor"));
 
             if (idParam == null || salaIdParam == null || usuarioIdParam == null ||
                 dataParam == null || horaInicioParam == null || horaFimParam == null ||
@@ -84,7 +86,7 @@ public class EditarReservaServlet extends HttpServlet {
             LocalTime horaInicio = LocalTime.parse(horaInicioParam);
             LocalTime horaFim = LocalTime.parse(horaFimParam);
 
-            new ReservaService().atualizarReserva(id, salaId, usuarioId, data, horaInicio, horaFim, motivo);
+            new ReservaService().atualizarReserva(id, salaId, usuarioId, data, horaInicio, horaFim, motivo, usarComputadores, usarProjetor);
             response.sendRedirect(request.getContextPath() + "/listarReservas?sucesso=Reserva atualizada com sucesso!");
 
         } catch (IllegalArgumentException | IllegalStateException e) {

@@ -10,7 +10,8 @@ public class ReservaFactory {
 
     public static Reserva criar(Sala sala, Usuario usuario,
                                 LocalDate data, LocalTime horaInicio,
-                                LocalTime horaFim, String motivo) {
+                                LocalTime horaFim, String motivo,
+                                boolean usarComputadores, boolean usarProjetor) {
         return new Reserva.Builder()
                 .sala(sala)
                 .usuario(usuario)
@@ -19,12 +20,15 @@ public class ReservaFactory {
                 .horaFim(horaFim)
                 .motivo(motivo)
                 .status("confirmada")
+                .usarComputadores(usarComputadores)
+                .usarProjetor(usarProjetor)
                 .build();
     }
 
     public static Reserva criarComId(int id, Sala sala, Usuario usuario,
                                      LocalDate data, LocalTime horaInicio,
-                                     LocalTime horaFim, String motivo) {
+                                     LocalTime horaFim, String motivo,
+                                     boolean usarComputadores, boolean usarProjetor) {
         return new Reserva.Builder()
                 .id(id)
                 .sala(sala)
@@ -34,6 +38,8 @@ public class ReservaFactory {
                 .horaFim(horaFim)
                 .motivo(motivo)
                 .status("confirmada")
+                .usarComputadores(usarComputadores)
+                .usarProjetor(usarProjetor)
                 .build();
     }
 }

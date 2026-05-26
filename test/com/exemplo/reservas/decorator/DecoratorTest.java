@@ -16,7 +16,7 @@ public class DecoratorTest {
         String descricao = sala.getDescricao();
 
         // Assert
-        assertEquals("Sem equipamentos", descricao);
+        assertEquals("Sala básica", descricao);
     }
 
     @Test
@@ -42,7 +42,7 @@ public class DecoratorTest {
                 .build();
 
         // Assert
-        assertEquals("Projetor", sala.getDescricao());
+        assertEquals("Sala básica + Projetor", sala.getDescricao());
     }
 
     @Test
@@ -66,7 +66,7 @@ public class DecoratorTest {
                 .build();
 
         // Assert
-        assertEquals("Computador", sala.getDescricao());
+        assertEquals("Sala básica + Computador", sala.getDescricao());
     }
 
     @Test

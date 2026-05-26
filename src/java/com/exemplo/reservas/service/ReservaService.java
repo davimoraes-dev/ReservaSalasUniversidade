@@ -58,7 +58,8 @@ public class ReservaService {
     }
 
     public Reserva criarReserva(String salaNome, String usuarioNome, LocalDate data,
-                                LocalTime horaInicio, LocalTime horaFim, String motivo) throws Exception {
+                                LocalTime horaInicio, LocalTime horaFim, String motivo,
+                                boolean usarComputadores, boolean usarProjetor) throws Exception {
         validarHorario(horaInicio, horaFim);
 
         Sala sala = salaDAO.buscarPorNome(salaNome);
@@ -76,13 +77,14 @@ public class ReservaService {
             throw new IllegalStateException("Já existe uma reserva para esta sala neste horário");
         }
 
-        Reserva reserva = ReservaFactory.criar(sala, usuario, data, horaInicio, horaFim, motivo);
+        Reserva reserva = ReservaFactory.criar(sala, usuario, data, horaInicio, horaFim, motivo, usarComputadores, usarProjetor);
         new InserirReservaComando(reservaDAO, reserva).executar();
         return reserva;
     }
 
     public void atualizarReserva(int id, int salaId, int usuarioId, LocalDate data,
-                                 LocalTime horaInicio, LocalTime horaFim, String motivo) throws Exception {
+                                 LocalTime horaInicio, LocalTime horaFim, String motivo,
+                                 boolean usarComputadores, boolean usarProjetor) throws Exception {
         validarHorario(horaInicio, horaFim);
 
         Sala sala = salaDAO.buscarPorId(salaId);
@@ -96,7 +98,7 @@ public class ReservaService {
             throw new IllegalStateException("Já existe uma reserva para esta sala neste horário");
         }
 
-        Reserva reserva = ReservaFactory.criarComId(id, sala, usuario, data, horaInicio, horaFim, motivo);
+        Reserva reserva = ReservaFactory.criarComId(id, sala, usuario, data, horaInicio, horaFim, motivo, usarComputadores, usarProjetor);
         new AtualizarReservaComando(reservaDAO, reserva).executar();
     }
 }

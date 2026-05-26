@@ -45,6 +45,19 @@
                     <label for="motivo">Motivo</label>
                     <textarea name="motivo" id="motivo" placeholder="Descreva o motivo da reserva..." required>${param.motivo}</textarea>
                 </div>
+                <div class="form-group">
+                    <label>Equipamentos</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="usarComputadores" ${param.usarComputadores == 'on' ? 'checked' : ''}>
+                            Computadores
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="usarProjetor" ${param.usarProjetor == 'on' ? 'checked' : ''}>
+                            Projetor
+                        </label>
+                    </div>
+                </div>
                 <div class="form-actions">
                     <a href="${pageContext.request.contextPath}/listarReservas" class="btn-voltar">Cancelar</a>
                     <button type="submit" class="btn-salvar">Salvar reserva</button>

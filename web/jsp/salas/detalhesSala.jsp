@@ -27,6 +27,10 @@
                 <div class="info-label">Equipamentos</div>
                 <div class="info-value">${salaDecorada.descricao}</div>
             </div>
+            <div class="info-item">
+                <div class="info-label">Custo equipamentos</div>
+                <div class="info-value">R$ ${salaDecorada.custo()}</div>
+            </div>
         </div>
         <p class="section-title">Reservas desta sala</p>
         <p class="total">${reservas.size()} reservas encontradas</p>

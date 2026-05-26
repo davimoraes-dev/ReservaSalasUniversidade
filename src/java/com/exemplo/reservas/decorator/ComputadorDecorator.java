@@ -8,7 +8,11 @@ public class ComputadorDecorator extends EquipamentoDecorator {
 
     @Override
     public String getDescricao() {
-        String base = salaDecorada.getDescricao();
-        return base.equals("Sem equipamentos") ? "Computador" : base + ", Computador";
+        return salaDecorada.getDescricao() + " + Computador";
+    }
+
+    @Override
+    public double custo() {
+        return salaDecorada.custo() + 50.0;
     }
 }
