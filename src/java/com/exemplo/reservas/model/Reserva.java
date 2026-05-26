@@ -12,6 +12,8 @@ public class Reserva {
     private String motivo;
     private String status;
     private String createdAt;
+    private boolean usarComputadores;
+    private boolean usarProjetor;
 
     public Reserva() {}
 
@@ -35,6 +37,8 @@ public class Reserva {
         this.horaFim = builder.horaFim;
         this.motivo = builder.motivo;
         this.status = builder.status;
+        this.usarComputadores = builder.usarComputadores;
+        this.usarProjetor = builder.usarProjetor;
     }
 
     // Builder
@@ -47,6 +51,8 @@ public class Reserva {
         private LocalTime horaFim;
         private String motivo;
         private String status = "confirmada";
+        private boolean usarComputadores;
+        private boolean usarProjetor;
 
         public Builder id(int id) {
             this.id = id;
@@ -88,6 +94,16 @@ public class Reserva {
             return this;
         }
 
+        public Builder usarComputadores(boolean usarComputadores) {
+            this.usarComputadores = usarComputadores;
+            return this;
+        }
+
+        public Builder usarProjetor(boolean usarProjetor) {
+            this.usarProjetor = usarProjetor;
+            return this;
+        }
+
         public Reserva build() {
             return new Reserva(this);
         }
@@ -112,6 +128,10 @@ public class Reserva {
     public void setStatus(String status) { this.status = status; }
     public String getCreatedAt() { return createdAt; }
     public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
+    public boolean isUsarComputadores() { return usarComputadores; }
+    public void setUsarComputadores(boolean usarComputadores) { this.usarComputadores = usarComputadores; }
+    public boolean isUsarProjetor() { return usarProjetor; }
+    public void setUsarProjetor(boolean usarProjetor) { this.usarProjetor = usarProjetor; }
 
     @Override
     public String toString() {

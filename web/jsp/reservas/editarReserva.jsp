@@ -56,6 +56,19 @@
                     <label for="motivo">Motivo</label>
                     <textarea id="motivo" name="motivo" rows="3" required>${reserva.motivo}</textarea>
                 </div>
+                <div class="form-group">
+                    <label>Equipamentos</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="usarComputadores" ${reserva.usarComputadores ? 'checked' : ''}>
+                            Computadores
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="usarProjetor" ${reserva.usarProjetor ? 'checked' : ''}>
+                            Projetor
+                        </label>
+                    </div>
+                </div>
                 <div class="form-actions">
                     <a href="${pageContext.request.contextPath}/listarReservas" class="btn-voltar">Cancelar</a>
                     <button type="submit" class="btn-salvar">Salvar alterações</button>

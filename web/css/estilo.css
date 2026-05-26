@@ -38,6 +38,7 @@ body {
 .topbar-links a:hover { color: #fff; }
 
 .page { max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; }
+.page-xl { max-width: 1300px; }
 .page-sm { max-width: 480px; }
 .page-md { max-width: 580px; }
 .page-lg { max-width: 800px; }
@@ -72,6 +73,7 @@ body {
 .msg-erro { background: #FCEBEB; color: #A32D2D; border: 1px solid #F7C1C1; padding: 10px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 1.5rem; }
 
 .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
+.card-table { overflow: visible; }
 .card-form { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 2rem; }
 
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -82,7 +84,8 @@ tbody tr:hover { background: #f9fafb; }
 tbody td { padding: 13px 16px; color: #111; vertical-align: middle; }
 
 .id-col { color: #888; }
-.acoes { display: flex; gap: 8px; }
+.acoes { display: flex; flex-direction: column; gap: 6px; }
+.card-table { overflow-x: auto; }
 
 .badge { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 500; }
 .badge-confirmada { background: #EAF3DE; color: #3B6D11; }

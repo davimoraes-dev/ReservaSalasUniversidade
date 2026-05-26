@@ -19,7 +19,7 @@ import java.util.List;
 public class ReservaDAO implements IReservaDAO {
 
     public void inserir(Reserva reserva) throws SQLException {
-        String sql = "INSERT INTO reservas (sala_id, usuario_id, data_reserva, hora_inicio, hora_fim, motivo, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO reservas (sala_id, usuario_id, data_reserva, hora_inicio, hora_fim, motivo, status, usar_computadores, usar_projetor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = Conexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setInt(1, reserva.getSala().getId());
@@ -29,6 +29,8 @@ public class ReservaDAO implements IReservaDAO {
             stmt.setTime(5, Time.valueOf(reserva.getHoraFim()));
             stmt.setString(6, reserva.getMotivo());
             stmt.setString(7, reserva.getStatus());
+            stmt.setBoolean(8, reserva.isUsarComputadores());
+            stmt.setBoolean(9, reserva.isUsarProjetor());
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) reserva.setId(rs.getInt(1));
@@ -36,7 +38,7 @@ public class ReservaDAO implements IReservaDAO {
     }
 
     public void atualizar(Reserva reserva) throws SQLException {
-        String sql = "UPDATE reservas SET sala_id = ?, usuario_id = ?, data_reserva = ?, hora_inicio = ?, hora_fim = ?, motivo = ?, status = ? WHERE id = ?";
+        String sql = "UPDATE reservas SET sala_id = ?, usuario_id = ?, data_reserva = ?, hora_inicio = ?, hora_fim = ?, motivo = ?, status = ?, usar_computadores = ?, usar_projetor = ? WHERE id = ?";
         try (Connection conn = Conexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, reserva.getSala().getId());
@@ -46,7 +48,9 @@ public class ReservaDAO implements IReservaDAO {
             stmt.setTime(5, Time.valueOf(reserva.getHoraFim()));
             stmt.setString(6, reserva.getMotivo());
             stmt.setString(7, reserva.getStatus());
-            stmt.setInt(8, reserva.getId());
+            stmt.setBoolean(8, reserva.isUsarComputadores());
+            stmt.setBoolean(9, reserva.isUsarProjetor());
+            stmt.setInt(10, reserva.getId());
             stmt.executeUpdate();
         }
     }
@@ -193,6 +197,8 @@ public class ReservaDAO implements IReservaDAO {
         r.setHoraFim(rs.getTime("hora_fim").toLocalTime());
         r.setMotivo(rs.getString("motivo"));
         r.setStatus(rs.getString("status"));
+        r.setUsarComputadores(rs.getBoolean("usar_computadores"));
+        r.setUsarProjetor(rs.getBoolean("usar_projetor"));
 
         Sala s = new Sala();
         s.setId(rs.getInt("sala_id"));

@@ -5,11 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista de Reservas</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/estilo.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/estilo.css?v=2">
 </head>
 <body>
     <%@ include file="/jsp/layout/header.jsp" %>
-    <div class="page">
+    <div class="page page-xl">
         <div class="header">
             <h1>Lista de reservas</h1>
             <a href="${pageContext.request.contextPath}/NovaReservaServlet" class="btn-novo">+ Nova Reserva</a>
@@ -21,12 +21,12 @@
             <div class="msg erro">${param.erro}</div>
         </c:if>
         <c:if test="${not empty reservas}">
-            <div class="card">
+            <div class="card card-table">
                 <table>
                     <thead>
                         <tr>
                             <th>ID</th><th>Sala</th><th>Usuário</th><th>Data</th>
-                            <th>Início</th><th>Fim</th><th>Motivo</th><th>Status</th><th>Ações</th>
+                            <th>Início</th><th>Fim</th><th>Motivo</th><th>Computadores</th><th>Projetor</th><th>Status</th><th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,6 +39,8 @@
                                 <td>${r.horaInicio}</td>
                                 <td>${r.horaFim}</td>
                                 <td>${r.motivo}</td>
+                                <td>${r.usarComputadores ? 'Sim' : 'Não'}</td>
+                                <td>${r.usarProjetor ? 'Sim' : 'Não'}</td>
                                 <td>
                                     <span class="badge badge-${r.status}">${r.status}</span>
                                     <c:if test="${r.data.toString() == hoje}">

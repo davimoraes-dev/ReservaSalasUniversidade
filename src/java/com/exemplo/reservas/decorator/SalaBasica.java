@@ -4,6 +4,11 @@ public class SalaBasica implements SalaComponente {
 
     @Override
     public String getDescricao() {
-        return "Sem equipamentos";
+        return "Sala básica";
+    }
+
+    @Override
+    public double custo() {
+        return 0.0;
     }
 }

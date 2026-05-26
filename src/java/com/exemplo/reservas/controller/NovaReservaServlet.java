@@ -29,6 +29,8 @@ public class NovaReservaServlet extends HttpServlet {
             String horaInicioParam = request.getParameter("horaInicio");
             String horaFimParam = request.getParameter("horaFim");
             String motivo = request.getParameter("motivo");
+            boolean usarComputadores = "on".equals(request.getParameter("usarComputadores"));
+            boolean usarProjetor = "on".equals(request.getParameter("usarProjetor"));
 
             if (salaNome == null || salaNome.trim().isEmpty() ||
                 usuarioNome == null || usuarioNome.trim().isEmpty() ||
@@ -43,7 +45,7 @@ public class NovaReservaServlet extends HttpServlet {
             LocalTime horaInicio = LocalTime.parse(horaInicioParam);
             LocalTime horaFim = LocalTime.parse(horaFimParam);
 
-            new ReservaService().criarReserva(salaNome.trim(), usuarioNome.trim(), data, horaInicio, horaFim, motivo);
+            new ReservaService().criarReserva(salaNome.trim(), usuarioNome.trim(), data, horaInicio, horaFim, motivo, usarComputadores, usarProjetor);
             response.sendRedirect(request.getContextPath() + "/listarReservas?sucesso=Reserva criada com sucesso!");
 
         } catch (IllegalArgumentException | IllegalStateException e) {
