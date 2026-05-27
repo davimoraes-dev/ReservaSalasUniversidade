@@ -25,8 +25,10 @@ public class GerenciarSalaServlet extends HttpServlet {
 
             if ("novo".equals(acao)) {
                 request.getRequestDispatcher("/jsp/salas/formSala.jsp").forward(request, response);
+                return;
+            }
 
-            } else if ("editar".equals(acao) && idParam != null) {
+            if ("editar".equals(acao) && idParam != null) {
                 int id = Integer.parseInt(idParam);
                 Sala sala = salaService.buscarPorId(id);
                 if (sala == null) {
@@ -35,8 +37,10 @@ public class GerenciarSalaServlet extends HttpServlet {
                 }
                 request.setAttribute("sala", sala);
                 request.getRequestDispatcher("/jsp/salas/formSala.jsp").forward(request, response);
+                return;
+            }
 
-            } else if ("excluir".equals(acao) && idParam != null) {
+            if ("excluir".equals(acao) && idParam != null) {
                 int id = Integer.parseInt(idParam);
                 if (!salaService.podeExcluir(id)) {
                     response.sendRedirect(request.getContextPath() + "/listarSalas?erro=Nao e possivel excluir sala com reservas ativas");
@@ -44,10 +48,10 @@ public class GerenciarSalaServlet extends HttpServlet {
                 }
                 salaService.excluir(id);
                 response.sendRedirect(request.getContextPath() + "/listarSalas?sucesso=Sala excluida com sucesso!");
-
-            } else {
-                response.sendRedirect(request.getContextPath() + "/listarSalas");
+                return;
             }
+
+            response.sendRedirect(request.getContextPath() + "/listarSalas");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,12 +87,13 @@ public class GerenciarSalaServlet extends HttpServlet {
                         temProjetor, temComputador);
                 salaService.atualizar(sala);
                 response.sendRedirect(request.getContextPath() + "/listarSalas?sucesso=Sala atualizada com sucesso!");
-            } else {
-                Sala sala = SalaFactory.criar(nome.trim(), Integer.parseInt(capacidadeParam),
-                        localizacao.trim(), temProjetor, temComputador);
-                salaService.inserir(sala);
-                response.sendRedirect(request.getContextPath() + "/listarSalas?sucesso=Sala cadastrada com sucesso!");
+                return;
             }
+
+            Sala sala = SalaFactory.criar(nome.trim(), Integer.parseInt(capacidadeParam),
+                    localizacao.trim(), temProjetor, temComputador);
+            salaService.inserir(sala);
+            response.sendRedirect(request.getContextPath() + "/listarSalas?sucesso=Sala cadastrada com sucesso!");
 
         } catch (Exception e) {
             e.printStackTrace();
