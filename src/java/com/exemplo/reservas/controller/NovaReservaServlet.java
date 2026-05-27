@@ -50,19 +50,10 @@ public class NovaReservaServlet extends HttpServlet {
 
         } catch (IllegalArgumentException | IllegalStateException e) {
             request.setAttribute("erro", e.getMessage());
-            try {
-                request.getRequestDispatcher("/jsp/reservas/novaReserva.jsp").forward(request, response);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            request.getRequestDispatcher("/jsp/reservas/novaReserva.jsp").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
             request.setAttribute("erro", "Erro ao salvar reserva");
-            try {
-                request.getRequestDispatcher("/jsp/reservas/novaReserva.jsp").forward(request, response);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            request.getRequestDispatcher("/jsp/reservas/novaReserva.jsp").forward(request, response);
         }
     }
 }
