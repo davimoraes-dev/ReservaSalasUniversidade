@@ -8,6 +8,10 @@ public class SalaDecoradorBuilder {
         this.sala = new SalaBasica();
     }
 
+    public SalaDecoradorBuilder(SalaComponente base) {
+        this.sala = base;
+    }
+
     public SalaDecoradorBuilder comProjetor() {
         this.sala = new ProjetorDecorator(this.sala);
         return this;
