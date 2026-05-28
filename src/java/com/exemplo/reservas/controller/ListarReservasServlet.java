@@ -27,7 +27,7 @@ public class ListarReservasServlet extends HttpServlet {
 
             Map<Integer, String> equipamentosDescricao = new LinkedHashMap<>();
             for (Reserva r : reservas) {
-                String descricao = salaService.construirDescricaoEquipamentos(r.isUsarComputadores(), r.isUsarProjetor());
+                String descricao = salaService.construirDescricaoEquipamentos(r.isUsarComputadores(), r.isUsarProjetor(), r.getSala().getCapacidade());
                 equipamentosDescricao.put(r.getId(), descricao);
             }
 

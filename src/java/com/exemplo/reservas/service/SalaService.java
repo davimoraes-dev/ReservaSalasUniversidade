@@ -5,6 +5,8 @@ import com.exemplo.reservas.command.ExcluirSalaComando;
 import com.exemplo.reservas.command.InserirSalaComando;
 import com.exemplo.reservas.dao.ISalaDAO;
 import com.exemplo.reservas.dao.SalaDAO;
+import com.exemplo.reservas.decorator.Auditorio;
+import com.exemplo.reservas.decorator.SalaBasica;
 import com.exemplo.reservas.decorator.SalaComponente;
 import com.exemplo.reservas.decorator.SalaDecoradorBuilder;
 import com.exemplo.reservas.model.Sala;
@@ -44,14 +46,16 @@ public class SalaService {
     }
 
     public SalaComponente construirEquipamentos(Sala sala) {
-        SalaDecoradorBuilder builder = new SalaDecoradorBuilder();
+        SalaComponente base = sala.getCapacidade() >= 80 ? new Auditorio() : new SalaBasica();
+        SalaDecoradorBuilder builder = new SalaDecoradorBuilder(base);
         if (sala.isTemProjetor()) builder.comProjetor();
         if (sala.isTemComputador()) builder.comComputador();
         return builder.build();
     }
 
-    public String construirDescricaoEquipamentos(boolean usarComputadores, boolean usarProjetor) {
-        SalaDecoradorBuilder builder = new SalaDecoradorBuilder();
+    public String construirDescricaoEquipamentos(boolean usarComputadores, boolean usarProjetor, int capacidade) {
+        SalaComponente base = capacidade >= 80 ? new Auditorio() : new SalaBasica();
+        SalaDecoradorBuilder builder = new SalaDecoradorBuilder(base);
         if (usarProjetor) builder.comProjetor();
         if (usarComputadores) builder.comComputador();
         return builder.build().getDescricao();
