@@ -9,8 +9,6 @@ import com.exemplo.reservas.dao.ReservaDAO;
 import com.exemplo.reservas.dao.SalaDAO;
 import com.exemplo.reservas.dao.UsuarioDAO;
 import com.exemplos.reserva.factory.ReservaFactory;
-import com.exemplos.reserva.factory.UsuarioFactory;
-import com.exemplo.reservas.command.InserirUsuarioComando;
 import com.exemplo.reservas.model.Reserva;
 import com.exemplo.reservas.model.Sala;
 import com.exemplo.reservas.model.Usuario;
@@ -69,8 +67,7 @@ public class ReservaService {
 
         Usuario usuario = usuarioDAO.buscarPorNome(usuarioNome);
         if (usuario == null) {
-            usuario = UsuarioFactory.criarAluno(usuarioNome);
-            new InserirUsuarioComando(usuarioDAO, usuario).executar();
+            throw new IllegalArgumentException("Usuário não encontrado. Cadastre o usuário primeiro em 'Usuários'.");
         }
 
         if (reservaDAO.existeConflito(sala.getId(), data, horaInicio, horaFim)) {
