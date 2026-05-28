@@ -26,7 +26,7 @@
                     <thead>
                         <tr>
                             <th>ID</th><th>Sala</th><th>Usuário</th><th>Data</th>
-                            <th>Início</th><th>Fim</th><th>Motivo</th><th>Computadores</th><th>Projetor</th><th>Status</th><th>Ações</th>
+                            <th>Início</th><th>Fim</th><th>Motivo</th><th>Equipamentos</th><th>Status</th><th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,8 +39,7 @@
                                 <td>${r.horaInicio}</td>
                                 <td>${r.horaFim}</td>
                                 <td>${r.motivo}</td>
-                                <td>${r.usarComputadores ? 'Sim' : 'Não'}</td>
-                                <td>${r.usarProjetor ? 'Sim' : 'Não'}</td>
+                                <td>${equipamentosDescricao[r.id]}</td>
                                 <td>
                                     <span class="badge badge-${r.status}">${r.status}</span>
                                     <c:if test="${r.data.toString() == hoje}">

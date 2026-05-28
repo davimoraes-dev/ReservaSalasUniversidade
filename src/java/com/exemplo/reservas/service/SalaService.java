@@ -49,4 +49,11 @@ public class SalaService {
         if (sala.isTemComputador()) builder.comComputador();
         return builder.build();
     }
+
+    public String construirDescricaoEquipamentos(boolean usarComputadores, boolean usarProjetor) {
+        SalaDecoradorBuilder builder = new SalaDecoradorBuilder();
+        if (usarProjetor) builder.comProjetor();
+        if (usarComputadores) builder.comComputador();
+        return builder.build().getDescricao();
+    }
 }
