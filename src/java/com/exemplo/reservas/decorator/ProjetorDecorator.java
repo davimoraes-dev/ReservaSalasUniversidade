@@ -10,9 +10,4 @@ public class ProjetorDecorator extends EquipamentoDecorator {
     public String getDescricao() {
         return salaDecorada.getDescricao() + " + Projetor";
     }
-
-    @Override
-    public double custo() {
-        return salaDecorada.custo() + 30.0;
-    }
 }

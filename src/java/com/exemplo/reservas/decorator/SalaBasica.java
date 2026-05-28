@@ -6,9 +6,4 @@ public class SalaBasica implements SalaComponente {
     public String getDescricao() {
         return "Sala básica";
     }
-
-    @Override
-    public double custo() {
-        return 0.0;
-    }
 }

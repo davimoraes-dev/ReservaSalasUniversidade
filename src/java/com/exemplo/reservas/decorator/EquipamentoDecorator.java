@@ -12,9 +12,4 @@ public abstract class EquipamentoDecorator implements SalaComponente {
     public String getDescricao() {
         return salaDecorada.getDescricao();
     }
-
-    @Override
-    public double custo() {
-        return salaDecorada.custo();
-    }
 }
