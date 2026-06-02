@@ -107,7 +107,7 @@ web/
 
 test/
 └── com/exemplo/reservas/decorator/
-    └── DecoratorTest.java   (14 testes JUnit 4)
+    └── DecoratorTest.java   (8 testes JUnit 4)
 ```
 
 ---
@@ -175,7 +175,7 @@ http://localhost:8080/ReservaSalasUniversidade/
 
 ## Testes
 
-Os testes cobrem o padrão Decorator com 14 casos de teste em JUnit 4:
+Os testes cobrem o padrão Decorator com 8 casos de teste em JUnit 4:
 
 ```
 test/com/exemplo/reservas/decorator/DecoratorTest.java
